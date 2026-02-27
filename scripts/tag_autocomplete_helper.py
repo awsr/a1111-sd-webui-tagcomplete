@@ -17,10 +17,10 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from modules import hashes, script_callbacks, sd_models, shared
 from pydantic import BaseModel
 
-from scripts.model_keyword_support import (get_lora_simple_hash,
+from .model_keyword_support import (get_lora_simple_hash,
                                            load_hash_cache, update_hash_cache,
                                            write_model_keyword_path)
-from scripts.shared_paths import *
+from .shared_paths import *
 
 try:
     from modules import sd_hijack
@@ -29,7 +29,7 @@ except (ImportError, ModuleNotFoundError):
 
 try:
     try:
-        from scripts import tag_frequency_db as tdb
+        from . import tag_frequency_db as tdb
     except ModuleNotFoundError:
         from inspect import currentframe, getframeinfo
         filename = getframeinfo(currentframe()).filename
