@@ -42,14 +42,7 @@ except (ImportError, ModuleNotFoundError):
     sd_hijack = None
 
 try:
-    try:
-        from . import tag_frequency_db as tdb
-    except ModuleNotFoundError:
-        from inspect import currentframe, getframeinfo
-        filename = getframeinfo(currentframe()).filename
-        parent = Path(filename).resolve().parent
-        sys.path.append(str(parent))
-        import tag_frequency_db as tdb
+    from . import tag_frequency_db as tdb
 
     # Ensure the db dependency is reloaded on script reload
     importlib.reload(tdb)
