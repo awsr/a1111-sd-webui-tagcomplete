@@ -17,10 +17,24 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from modules import hashes, script_callbacks, sd_models, shared
 from pydantic import BaseModel
 
-from .model_keyword_support import (get_lora_simple_hash,
-                                           load_hash_cache, update_hash_cache,
-                                           write_model_keyword_path)
-from .shared_paths import *
+from .model_keyword_support import (
+    get_lora_simple_hash,
+    load_hash_cache,
+    update_hash_cache,
+    write_model_keyword_path,
+)
+from .shared_paths import (
+    EMB_PATH,
+    FILE_DIR,
+    HYP_PATH,
+    LORA_PATH,
+    LYCO_PATH,
+    STATIC_TEMP_PATH,
+    TAGS_PATH,
+    TEMP_PATH,
+    WILDCARD_PATH,
+    find_ext_wildcard_paths,
+)
 
 try:
     from modules import sd_hijack
