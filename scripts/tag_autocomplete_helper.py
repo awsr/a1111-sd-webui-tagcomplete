@@ -300,6 +300,8 @@ def get_embeddings(sd_model):
 def get_hypernetworks():
     """Write a list of all hypernetworks"""
 
+    if HYP_PATH is None:
+        return None
     # Get a list of all hypernetworks in the folder
     hyp_paths = [Path(h) for h in glob.glob(HYP_PATH.joinpath("**/*").as_posix(), recursive=True)]
     all_hypernetworks = [(h, h.stem) for h in hyp_paths if h.suffix in {".pt"} and h.is_file()]
