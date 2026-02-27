@@ -749,7 +749,7 @@ def get_style_mtime():
     except Exception:
         return None
 
-last_style_mtime = get_style_mtime()
+last_style_mtime = get_style_mtime() or 0
 
 def api_tac(_: gr.Blocks, app: FastAPI):
     async def get_json_info(base_path: Path, filename: str = None):
