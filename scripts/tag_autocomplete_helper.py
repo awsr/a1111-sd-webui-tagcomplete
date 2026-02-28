@@ -151,7 +151,7 @@ def is_umi_format(data):
             if not (data[item] and 'Tags' in data[item] and isinstance(data[item]['Tags'], list)):
                 issue_found = True
                 break
-        except:
+        except Exception:
             issue_found = True
             break
     return not issue_found
@@ -177,7 +177,7 @@ def parse_dynamic_prompt_format(yaml_wildcards, data, path):
         recurse_dict(data)
         # Add to yaml_wildcards
         yaml_wildcards[path.name] = data
-    except:
+    except Exception:
         return
 
 
@@ -207,7 +207,7 @@ def get_yaml_wildcards():
             # YAML file not in wildcard format or couldn't be read
             print(f'Issue in parsing YAML file {path.name}: {e}')
             continue
-        except Exception as e:
+        except Exception:
             # Something else went wrong, just skip
             continue
 
@@ -243,14 +243,14 @@ def get_embeddings(sd_model):
         global load_textual_inversion_embeddings
         if embed_db is not None and load_textual_inversion_embeddings != embed_db.load_textual_inversion_embeddings:
             load_textual_inversion_embeddings = embed_db.load_textual_inversion_embeddings
-        
+
         loaded = embed_db.word_embeddings
         skipped = embed_db.skipped_embeddings
 
         # Add embeddings to the correct list
         for key, emb in (skipped | loaded).items():
             filename = getattr(emb, "filename", None)
-            
+
             if filename is None:
                 if emb.shape is None:
                     emb_unknown.append((Path(key), key, ""))
@@ -262,7 +262,7 @@ def get_embeddings(sd_model):
                     emb_vXL.append((Path(key), key, "vXL"))
                 else:
                     emb_unknown.append((Path(key), key, ""))
-            
+
             else:
                 if emb.filename is None:
                     continue
@@ -748,7 +748,7 @@ def get_style_mtime():
         # Check in case a list is returned
         if isinstance(style_file, list):
             style_file = style_file[0]
-        
+
         style_file = Path(FILE_DIR).joinpath(style_file)
         if Path.exists(style_file):
             return style_file.stat().st_mtime
@@ -810,7 +810,7 @@ def api_tac(_: gr.Blocks, app: FastAPI):
             hash = hashes.sha256_from_cache(path, f"lora/{lora_name}", path.endswith(".safetensors"))
             if hash is not None:
                 return hash
-        
+
         return None
 
     def get_path_for_type(type):
@@ -854,14 +854,14 @@ def api_tac(_: gr.Blocks, app: FastAPI):
     @app.get("/tacapi/v1/refresh-styles-if-changed")
     async def refresh_styles_if_changed():
         global last_style_mtime
-        
+
         mtime = get_style_mtime()
         if mtime is not None and mtime > last_style_mtime:
             last_style_mtime = mtime
             # Update temp file
             if shared.prompt_styles is not None:
                 write_style_names()
-            
+
             return Response(status_code=200) # Success
         else:
             return Response(status_code=304) # Not modified
@@ -887,7 +887,7 @@ def api_tac(_: gr.Blocks, app: FastAPI):
     @app.get("/tacapi/v1/get-use-count")
     async def get_use_count(tagname: str, ttype: int, neg: bool):
         return db_request(lambda: db.get_tag_count(tagname, ttype, neg), get=True)
-    
+
     # Small dataholder class
     class UseCountListRequest(BaseModel):
         tagNames: list[str]
@@ -905,7 +905,7 @@ def api_tac(_: gr.Blocks, app: FastAPI):
             count_list = list(db.get_tag_counts(body.tagNames, body.tagTypes, body.neg, date_limit))
         else:
             count_list = None
-    
+
         # If a limit is set, return at max the top n results by count
         if count_list and len(count_list):
             limit = int(min(getattr(shared.opts, "tac_frequencyRecommendCap", 10), len(count_list)))

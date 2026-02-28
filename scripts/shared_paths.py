@@ -50,7 +50,7 @@ except AttributeError:
 try:
     try:
         LYCO_PATH = Path(shared.cmd_opts.lyco_dir_backcompat).absolute()
-    except:
+    except Exception:
         LYCO_PATH = Path(shared.cmd_opts.lyco_dir).absolute() # attempt original non-backcompat path
 except AttributeError:
     LYCO_PATH = None
