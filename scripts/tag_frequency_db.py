@@ -16,7 +16,7 @@ def transaction(db=db_file):
     conn = None
     try:
         conn = sqlite3.connect(db, timeout=timeout)
-        
+
         conn.isolation_level = None
         cursor = conn.cursor()
         cursor.execute("BEGIN")
@@ -95,7 +95,7 @@ class TagFrequencyDb:
     def get_all_tags(self):
         with transaction() as cursor:
             cursor.execute(
-                f"""
+                """
             SELECT name, type, count_pos, count_neg, last_used
             FROM tag_frequency
             WHERE count_pos > 0 OR count_neg > 0
@@ -164,7 +164,7 @@ class TagFrequencyDb:
 
         with transaction() as cursor:
             cursor.execute(
-                f"""
+                """
             INSERT OR REPLACE
             INTO tag_frequency (name, type, count_pos, count_neg)
             VALUES (?, ?, ?, ?)
