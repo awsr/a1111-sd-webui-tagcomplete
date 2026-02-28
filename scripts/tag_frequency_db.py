@@ -179,6 +179,8 @@ class TagFrequencyDb:
             set_str = "count_pos = 0"
         elif negative:
             set_str = "count_neg = 0"
+        else:
+            return
 
         with transaction() as cursor:
             cursor.execute(
