@@ -32,6 +32,7 @@ from .shared_paths import (
     STATIC_TEMP_PATH,
     TAGS_PATH,
     TEMP_PATH,
+    WILDCARD_EXT_PATHS,
     WILDCARD_PATH,
     find_ext_wildcard_paths,
 )
